@@ -9,6 +9,8 @@ def clave_dinamica(clave: str, mensaje: str) -> str:
     return clave * (len(mensaje) // len(clave)) + \
         clave[:len(mensaje) % len(clave)]
 
+def cantidad_bits_byte():
+    return 0xFF.bit_length()
 
 def cifrado(clave: str, mensaje: str) -> str:
     mensaje = mensaje_espacios(mensaje)
@@ -23,7 +25,7 @@ def cifrado(clave: str, mensaje: str) -> str:
             valor_letra_clave = DISTRIBUCION_BVORAK.index(clave[i])
             # print(valor_letra_clave)
             calculo = ((valor_letra_mensaje -
-                       valor_letra_clave) % len(DISTRIBUCION_BVORAK)) + 8
+                       valor_letra_clave) % len(DISTRIBUCION_BVORAK)) + cantidad_bits_byte()
             if calculo > len(DISTRIBUCION_BVORAK):
                 calculo -= len(DISTRIBUCION_BVORAK)
             # print(calculo)
@@ -42,7 +44,7 @@ def descifrado(clave: str, mensaje_cifrado: str) -> str:
         if c in DISTRIBUCION_BVORAK:
             valor_letra_cifrado = DISTRIBUCION_BVORAK.index(c)
             valor_letra_clave = DISTRIBUCION_BVORAK.index(clave[i])
-            calculo = ((valor_letra_cifrado - 8) +
+            calculo = ((valor_letra_cifrado - cantidad_bits_byte()) +
                        valor_letra_clave) % len(DISTRIBUCION_BVORAK)
             if calculo < 0:
                 calculo += len(DISTRIBUCION_BVORAK)
